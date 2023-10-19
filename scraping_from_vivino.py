@@ -12,7 +12,7 @@ def get_wine_data(wine_id, year, page):
     return data
 
 number_page = [1]
-country_codes = ["nl"]
+country_codes = ["ao", "br", "bs", "cn", "es", "nl", "se", "us", "at", "au", "de", "fr", "it", "pt", "at", "au", "de"]
 
 for wine_page in number_page:
     for country_code in country_codes:
@@ -41,7 +41,8 @@ for wine_page in number_page:
             wine_name_year = f'{t["vintage"]["wine"]["name"]} {t["vintage"]["year"]}'
             ratings_average = t["vintage"]["statistics"]["ratings_average"]
             ratings_count = t["vintage"]["statistics"]["ratings_count"]
-        
+            price = t["price"]["amount"]
+
             if t["vintage"]["wine"]["taste"] and t["vintage"]["wine"]["taste"]["structure"]:
                 acidity = t["vintage"]["wine"]["taste"]["structure"].get("acidity")
                 fizziness = t["vintage"]["wine"]["taste"]["structure"].get("fizziness")
@@ -56,11 +57,11 @@ for wine_page in number_page:
                 sweetness = None
                 tannin = None
 
-            results.append((winery_name, year, wine_id, wine_name_year, ratings_average, ratings_count, acidity, fizziness, intensity, sweetness, tannin))
+            results.append((winery_name, year, wine_id, wine_name_year, ratings_average, ratings_count, price, acidity, fizziness, intensity, sweetness, tannin))
 
         wine_df = pd.DataFrame(
             results,
-            columns=["Winery", "Year", "Wine ID", "Wine", "Rating", "num_review", "acidity", "fizziness", "intensity", "sweetness", "tannin"],
+            columns=["Winery", "Year", "Wine ID", "Wine", "Rating", "num_review", "price(EUR)", "acidity", "fizziness", "intensity", "sweetness", "tannin"],
         )
         ratings = []
         for _, row in wine_df.iterrows():
